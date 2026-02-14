@@ -28,7 +28,12 @@
               'text-red-400': score < 0,
               'text-zinc-300': score === 0
             }">
-              {{ score }}
+              <span v-if="!showCountdown">
+                {{ score }}
+              </span>
+              <span v-else>
+                ---
+              </span>
             </div>
           </div>
         </div>
@@ -71,8 +76,8 @@
         <div class="grid md:grid-cols-3 w-full gap-8 text-xs md:text-sm font-mono">
 
           <!-- Rock -->
-          <button @click="handleChoice('Rock')" :disabled="isWaitingForResult"
-            class="shadow-2xl shadow-black/50 p-6  border-4 border-dashed border-zinc-700 border-5px transition-all duration-200 hover:scale-105 hover:border-green-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+          <button @click="handleChoice('Rock')" :disabled="isWaitingForResult || inFlight"
+            class="shadow-2xl shadow-black/50 p-6  border-4 border-dashed cursor-pointer border-zinc-700 border-5px transition-all duration-200 hover:scale-105 hover:border-green-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
             <h2 class="text-center mb-4 text-zinc-300 tracking-widest">ROCK</h2>
             <pre class="leading-tight text-green-400">
               <Rock />
@@ -80,8 +85,8 @@
           </button>
 
           <!-- Paper -->
-          <button @click="handleChoice('Paper')" :disabled="isWaitingForResult"
-            class="shadow-2xl shadow-black/50 p-6 border-4 border-dashed border-zinc-700 border-5px transition-all duration-200 hover:scale-105 hover:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+          <button @click="handleChoice('Paper')" :disabled="isWaitingForResult || inFlight"
+            class="shadow-2xl shadow-black/50 p-6 border-4 border-dashed cursor-pointer border-zinc-700 border-5px transition-all duration-200 hover:scale-105 hover:border-blue-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
             <h2 class="text-center mb-4 text-zinc-300 tracking-widest">PAPER</h2>
             <pre class="leading-tight text-blue-400">
               <Paper />
@@ -89,8 +94,8 @@
           </button>
 
           <!-- Scissors -->
-          <button @click="handleChoice('Scissors')" :disabled="isWaitingForResult"
-            class="shadow-2xl shadow-black/50 p-6 border-4 border-dashed border-zinc-700 border-5px transition-all duration-200 hover:scale-105 hover:border-pink-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
+          <button @click="handleChoice('Scissors')" :disabled="isWaitingForResult || inFlight"
+            class="shadow-2xl shadow-black/50 p-6 border-4 border-dashed cursor-pointer border-zinc-700 border-5px transition-all duration-200 hover:scale-105 hover:border-pink-500 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100">
             <h2 class="text-center mb-4 text-zinc-300 tracking-widest">SCISSORS</h2>
             <pre class="leading-tight text-pink-400">
               <Scissors />
@@ -110,11 +115,16 @@ const { play, score, lastResult, isWaitingForResult, error } = useRockPaperSciss
 
 const countdown = ref<number | null>(null)
 const showCountdown = ref(false)
+const inFlight = ref(false)
 
 const handleChoice = async (choice: Choice) => {
   // Start countdown
+  inFlight.value = true;
   showCountdown.value = true
   countdown.value = 3
+
+  // Send the choice to the server
+  await play(choice)
 
   // Run countdown
   for (let i = 3; i > 0; i--) {
@@ -124,12 +134,10 @@ const handleChoice = async (choice: Choice) => {
 
   showCountdown.value = false
 
-  // Send the choice to the server
-  await play(choice)
-
   // Show result for 2 seconds before clearing
   setTimeout(() => {
     lastResult.value = null
+    inFlight.value = false
   }, 2000)
 }
 </script>
