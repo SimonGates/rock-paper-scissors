@@ -3,7 +3,7 @@
 </template>
 <script setup lang="ts">
 let rock = `
-    _______
+    ______
 ---'   ____)
       (_____)
       (_____)
