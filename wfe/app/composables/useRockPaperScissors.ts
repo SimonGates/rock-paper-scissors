@@ -39,15 +39,10 @@ export const useRockPaperScissors = () => {
 
         ws.value.onmessage = (event) => {
           console.log('Received:', event.data)
-          
-          // Skip the welcome message
-          if (event.data === 'Hi!') {
-            return
-          }
 
           try {
             const data: GameResponse = JSON.parse(event.data)
-            
+
             if (data.Result) {
               lastResult.value = data.Result.turn_result
               score.value = data.Result.game.score
