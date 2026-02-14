@@ -45,11 +45,6 @@ impl Server {
 
         let mut game_session = rock_paper_scissors::Game::new();
 
-        write
-            .send(Message::Text(Utf8Bytes::from(format!("Hi!"))))
-            .await
-            .expect("Error welcoming peer");
-
         while let Some(msg) = read.next().await {
             if let Ok(msg) = msg {
                 match deserialise(&msg) {

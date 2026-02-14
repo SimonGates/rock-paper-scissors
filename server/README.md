@@ -63,11 +63,7 @@ Available log levels: `error`, `warn`, `info`, `debug`, `trace`
 
 ### Connection
 
-Connect to the WebSocket server at `ws://localhost:6767`. Upon connection, the server sends a welcome message:
-
-```
-Hi!
-```
+Connect to the WebSocket server at `ws://localhost:6767`.
 
 ### Message Format
 
