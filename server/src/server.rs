@@ -6,7 +6,7 @@ use std::{
     str::FromStr,
 };
 use tokio::net::TcpStream;
-use tokio_tungstenite::tungstenite::{Message, Utf8Bytes};
+use tokio_tungstenite::tungstenite::Message;
 
 use crate::rock_paper_scissors::{self, Game, TurnResult};
 
