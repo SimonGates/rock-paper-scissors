@@ -1,0 +1,7 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme static {
+  --font-sans: 'IBM Plex Mono','Public Sans', sans-serif;
+  --font-display: 'Press Start 2P', 'Public Sans', sans-serif;
+}
