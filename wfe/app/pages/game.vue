@@ -5,28 +5,18 @@
 
     <!-- Audio Controls -->
     <div class="flex justify-center gap-4 -mt-4 mb-8">
-      <button
-        @click="toggleMusic"
+      <button @click="toggleMusic"
         class="p-3 bg-zinc-900 border-2 border-zinc-700 shadow-lg hover:border-zinc-500 transition-all duration-200"
-        :class="{ 'border-green-500': isMusicEnabled, 'border-red-500': !isMusicEnabled }"
-      >
-        <Icon 
-          :name="isMusicEnabled ? 'heroicons:musical-note' : 'heroicons:musical-note-slash'" 
-          class="w-6 h-6"
-          :class="isMusicEnabled ? 'text-green-400' : 'text-red-400'"
-        />
+        :class="{ 'border-green-500': isMusicEnabled, 'border-red-500': !isMusicEnabled }">
+        <Icon :name="isMusicEnabled ? 'heroicons:musical-note' : 'heroicons:musical-note-slash'" class="w-6 h-6"
+          :class="isMusicEnabled ? 'text-green-400' : 'text-red-400'" />
       </button>
-      
-      <button
-        @click="toggleSfx"
+
+      <button @click="toggleSfx"
         class="p-3 bg-zinc-900 border-2 border-zinc-700 shadow-lg hover:border-zinc-500 transition-all duration-200"
-        :class="{ 'border-green-500': isSfxEnabled, 'border-red-500': !isSfxEnabled }"
-      >
-        <Icon 
-          :name="isSfxEnabled ? 'heroicons:speaker-wave' : 'heroicons:speaker-x-mark'" 
-          class="w-6 h-6"
-          :class="isSfxEnabled ? 'text-green-400' : 'text-red-400'"
-        />
+        :class="{ 'border-green-500': isSfxEnabled, 'border-red-500': !isSfxEnabled }">
+        <Icon :name="isSfxEnabled ? 'heroicons:speaker-wave' : 'heroicons:speaker-x-mark'" class="w-6 h-6"
+          :class="isSfxEnabled ? 'text-green-400' : 'text-red-400'" />
       </button>
     </div>
 
@@ -139,7 +129,7 @@
 type Choice = 'Rock' | 'Paper' | 'Scissors'
 
 const { play, score, lastResult, isWaitingForResult, error } = useRockPaperScissors()
-const { isMusicEnabled, isSfxEnabled, toggleMusic, toggleSfx, playChoice, playWin, playLose, initAudio } = useGameAudio()
+const { isMusicEnabled, isSfxEnabled, toggleMusic, toggleSfx, playChoice, playWin, playLose, playDraw, initAudio } = useGameAudio()
 
 const countdown = ref<number | null>(null)
 const showCountdown = ref(false)
@@ -150,20 +140,10 @@ onMounted(() => {
   initAudio()
 })
 
-// Watch for result changes to play appropriate sounds
-watch(lastResult, (newResult) => {
-  if (newResult === 'Win') {
-    playWin()
-  } else if (newResult === 'Lose') {
-    playLose()
-  }
-  // Note: Draw doesn't have a specific sound
-})
-
 const handleChoice = async (choice: Choice) => {
   // Play choice sound
   playChoice()
-  
+
   // Start countdown
   inFlight.value = true;
   showCountdown.value = true
@@ -179,7 +159,15 @@ const handleChoice = async (choice: Choice) => {
   }
 
   showCountdown.value = false
-
+  if (lastResult.value === 'Win') {
+    playWin()
+  }
+  else if (lastResult.value === 'Draw') {
+    playDraw()
+  }
+  else if (lastResult.value === 'Lose') {
+    playLose()
+  }
   // Show result for 2 seconds before clearing
   setTimeout(() => {
     lastResult.value = null
