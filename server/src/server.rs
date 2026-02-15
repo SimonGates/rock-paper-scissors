@@ -1,3 +1,6 @@
+#[cfg(test)]
+mod tests;
+
 use futures_util::{SinkExt, StreamExt};
 use log::{error, info};
 use serde::{Deserialize, Serialize};
@@ -10,6 +13,7 @@ use tokio_tungstenite::tungstenite::Message;
 
 use crate::rock_paper_scissors::{self, Game, TurnResult};
 
+#[derive(Debug)]
 pub struct Server {
     port: u16,
     bind_address: SocketAddr,
