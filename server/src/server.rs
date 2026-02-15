@@ -47,6 +47,10 @@ impl Server {
 
         while let Some(msg) = read.next().await {
             if let Ok(msg) = msg {
+                if msg.is_close() {
+                    info!("Client {addr} Closing Connection");
+                    break;
+                }
                 match deserialise(&msg) {
                     Ok(JsonIn::Payload(choice)) => {
                         let result = game_session.process_turn(choice);
