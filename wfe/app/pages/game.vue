@@ -3,26 +3,26 @@
     <UPageHero title="Rock Paper Scissors" description="Rusty Nuxt"
       :ui="{ header: 'font-display', container: 'mb-0 lg:pb-0 ' }" />
 
-    <!-- Audio Controls -->
-    <div class="flex justify-center gap-4 -mt-4 mb-8">
-      <button @click="toggleMusic"
-        class="p-3 bg-zinc-900 border-2 border-zinc-700 shadow-lg hover:border-zinc-500 transition-all duration-200"
-        :class="{ 'border-green-500': isMusicEnabled, 'border-red-500': !isMusicEnabled }">
-        <Icon :name="isMusicEnabled ? 'heroicons:musical-note' : 'heroicons:musical-note-slash'" class="w-6 h-6"
-          :class="isMusicEnabled ? 'text-green-400' : 'text-red-400'" />
-      </button>
-
-      <button @click="toggleSfx"
-        class="p-3 bg-zinc-900 border-2 border-zinc-700 shadow-lg hover:border-zinc-500 transition-all duration-200"
-        :class="{ 'border-green-500': isSfxEnabled, 'border-red-500': !isSfxEnabled }">
-        <Icon :name="isSfxEnabled ? 'heroicons:speaker-wave' : 'heroicons:speaker-x-mark'" class="w-6 h-6"
-          :class="isSfxEnabled ? 'text-green-400' : 'text-red-400'" />
-      </button>
-    </div>
-
     <UPageSection class="mt-0">
+
+      <!-- Audio Controls -->
+      <div class="flex justify-center gap-4 -mt-4">
+        <button @click="toggleMusic"
+          class="p-3 bg-zinc-900 border-2 border-zinc-700 shadow-lg hover:border-zinc-500 transition-all duration-200"
+          :class="{ 'border-green-500': isMusicEnabled, 'border-red-500': !isMusicEnabled }">
+          <Icon name="heroicons:musical-note" class="w-6 h-6"
+            :class="isMusicEnabled ? 'text-green-400' : 'text-red-400'" />
+        </button>
+        <button @click="toggleSfx"
+          class="p-3 bg-zinc-900 border-2 border-zinc-700 shadow-lg hover:border-zinc-500 transition-all duration-200"
+          :class="{ 'border-green-500': isSfxEnabled, 'border-red-500': !isSfxEnabled }">
+          <Icon :name="isSfxEnabled ? 'heroicons:speaker-wave' : 'heroicons:speaker-x-mark'" class="w-6 h-6"
+            :class="isSfxEnabled ? 'text-green-400' : 'text-red-400'" />
+        </button>
+      </div>
+
       <!-- Info Row: Rules, Score, Countdown -->
-      <div class="grid md:grid-cols-3 gap-6 mb-8">
+      <div class="grid md:grid-cols-3 gap-6">
         <!-- Rules -->
         <div class="px-6 py-4 bg-zinc-900 border-4 border-zinc-700 shadow-2xl shadow-black/50">
           <div class="text-zinc-500 text-xs font-mono space-y-2">
